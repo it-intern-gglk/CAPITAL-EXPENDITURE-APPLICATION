@@ -118,6 +118,8 @@ body {
   appearance: auto;
   cursor: pointer;
 }
+.timetable .col-headers td:nth-child(2),
+.timetable td select[name="startYear"] { min-width: 95px; }
 .sheet-table input.inline-num { width: 70px; display: inline-block; }
 .sheet-table td label { display: inline-flex; align-items: center; gap: 8px; font-size: 15px; cursor: pointer; white-space: nowrap; }
 .sheet-table td label input[type="radio"],
