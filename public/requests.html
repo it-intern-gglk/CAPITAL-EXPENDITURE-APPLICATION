@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Capex Requests — Elastomeric Engineering</title>
+<link rel="stylesheet" href="style.css?v2">
+</head>
+<body>
+<div class="page">
+
+  <header class="page-header">
+    <div class="header-brand">
+      <div class="header-logo">CE</div>
+      <div>
+        <h1>Submitted Capex Requests</h1>
+        <p>Browse submitted requests and download filled Excel files.</p>
+      </div>
+    </div>
+    <a href="index.html" class="btn ghost small">&larr; New request</a>
+  </header>
+
+  <div class="request-list-wrap">
+    <div id="list" class="request-list">Loading…</div>
+
+<div id="pwdModal" class="modal-overlay hidden">
+  <div class="modal-box">
+    <h2>Authentication Required</h2>
+    <p>Enter password to view submitted requests.</p>
+    <input type="password" id="pwdInput" placeholder="Password" autocomplete="off">
+    <div class="modal-actions">
+      <button class="btn ghost" onclick="closePwdModal()">Cancel</button>
+      <button class="btn primary" onclick="submitPwd()">Submit</button>
+    </div>
+    <p id="pwdError" class="pwd-error hidden">Incorrect password.</p>
+  </div>
+</div>
+  </div>
+
+  <div class="footer">&copy; 2026 Gislaved Gummi Lanka (Pvt) Ltd | Elastomeric Engineering Co Ltd &bull; All rights reserved.<br>Developed by IT Department.</div>
+</div>
+<script>
+function showAccessModal() {
+  document.getElementById('pwdError').classList.add('hidden');
+  document.getElementById('pwdInput').value = '';
+  document.getElementById('pwdModal').classList.remove('hidden');
+  document.getElementById('pwdInput').focus();
+}
+function closePwdModal() {
+  document.getElementById('pwdModal').classList.add('hidden');
+  location.href = 'index.html';
+}
+function submitPwd() {
+  var pwd = document.getElementById('pwdInput').value;
+  if (pwd === 'stlk@2026') {
+    sessionStorage.setItem('requestsAccess', 'true');
+    document.getElementById('pwdModal').classList.add('hidden');
+    document.getElementById('list').textContent = 'Loading…';
+    loadRequests();
+  } else {
+    document.getElementById('pwdError').classList.remove('hidden');
+    document.getElementById('pwdInput').focus();
+  }
+}
+document.getElementById('pwdInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') submitPwd();
+  if (e.key === 'Escape') closePwdModal();
+});
+if (sessionStorage.getItem('requestsAccess') !== 'true') {
+  showAccessModal();
+}
+</script>
+<script src="requests.js"></script>
+</body>
+</html>

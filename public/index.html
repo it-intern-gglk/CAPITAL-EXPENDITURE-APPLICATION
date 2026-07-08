@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Capital Expenditure Application — Elastomeric Engineering</title>
+<link rel="stylesheet" href="style.css?v2">
+</head>
+<body>
+<div class="page">
+
+  <header class="page-header">
+    <div class="header-brand">
+      <!-- <div class="header-logo">CE</div> -->
+      <div>
+        <h1>CAPITAL EXPENDITURE APPLICATION</h1>
+        <p>Gislaved Gummi Lanka (Pvt) Ltd | Elastomeric Engineering Co Ltd</p>
+      </div>
+    </div>
+    <a href="#" onclick="return viewRequests()" class="btn ghost small">View submitted requests →</a>
+  </header>
+
+  <form id="capexForm" class="sheet">
+
+    <div class="rate-row">
+      <span>USD Rate</span>
+      <input type="number" step="0.01" name="usdRate" value="336.39" required>
+    </div>
+
+    <table class="sheet-table header-table">
+      <tr>
+        <td class="label" style="width:12%">Company:</td>
+        <td style="width:30%"><select name="company" required>
+          <option value="" disabled selected>Select company</option>
+          <option value="ELASTOMERIC ENGINEERING CO.LTD">ELASTOMERIC ENGINEERING CO.LTD</option>
+          <option value="GISLAVED GUMMI LANKA (PVT) LTD">GISLAVED GUMMI LANKA (PVT) LTD</option>
+          <option value="ELASTOMERIC TOOLS AND DIES (PVT) LTD">ELASTOMERIC TOOLS AND DIES (PVT) LTD</option>
+        </select></td>
+        <td class="label" style="width:12%">Date:</td>
+        <td style="width:30%"><input type="date" name="date" required></td>
+      </tr>
+      <tr>
+        <td></td><td></td>
+        <td class="label">Issued&nbsp;by:</td>
+        <td><input type="text" name="issuedBy" placeholder="Full name" required></td>
+      </tr>
+      <tr>
+        <td></td><td></td>
+        <td class="label">Invest.No.-</td>
+        <td><input type="text" name="investNo" placeholder="optional"></td>
+      </tr>
+    </table>
+
+    <table class="sheet-table object-table">
+      <tr>
+        <td class="label" style="width:14%">Object:</td>
+        <td colspan="4"><input type="text" name="object" placeholder="" required></td>
+      </tr>
+    </table>
+
+    <table class="sheet-table items-table">
+      <thead>
+        <tr class="col-headers">
+          <td></td><td>USD</td><td>LKR</td><td></td>
+        </tr>
+      </thead>
+      <tbody id="lineItems"></tbody>
+      <tfoot>
+        <tr>
+          <td class="label">Total</td>
+          <td class="num total" id="totalUsd">0.00</td>
+          <td class="num total" id="totalLkr">0.00</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><button type="button" id="addItem" class="btn ghost small">+ Add item</button></td>
+          <td colspan="3"></td>
+        </tr>
+      </tfoot>
+    </table>
+    <p class="hint">Ex.Rate @ <span id="rateEcho">336.39</span></p>
+
+    <p class="proposal-note">Please find attached description of the proposal</p>
+
+    <div class="reasons-block">
+      <p class="label">Reasons:</p>
+      <table class="sheet-table reasons-table">
+        <tr>
+          <td><label><input type="radio" name="reason" value="expansion" required> Expansion</label></td>
+          <td><label><input type="radio" name="reason" value="workingEnvironment"> Working environment</label></td>
+        </tr>
+        <tr>
+          <td><label><input type="radio" name="reason" value="environmentProtection"> Environment protection</label></td>
+          <td><label><input type="radio" name="reason" value="rationalization"> Rationalization</label></td>
+        </tr>
+        <tr>
+          <td><label><input type="radio" name="reason" value="replacement"> Replacement</label></td>
+          <td><label><input type="radio" name="reason" value="marketingPR"> Marketing/PR</label></td>
+        </tr>
+      </table>
+      <label class="stacked">Description of proposal (goes on page 2 of the form)
+        <textarea name="reasonDescription" rows="3" placeholder="Explain the reason for this request in detail"></textarea>
+      </label>
+    </div>
+
+    <div class="two-col">
+      <table class="sheet-table timetable">
+        <tr><td class="label" colspan="5">Timetable</td></tr>
+        <tr class="col-headers"><td></td><td>Year</td><td>Month</td><td>Life</td><td>Year(s)</td></tr>
+        <tr>
+          <td class="label">Start</td>
+          <td><select name="startYear" required>
+            <option value="">Year</option>
+            <option value="2026">2026</option>
+            <option value="2027">2027</option>
+            <option value="2028">2028</option>
+            <option value="2029">2029</option>
+            <option value="2030">2030</option>
+          </select></td>
+          <td><select name="startMonth" required>
+            <option value="">Month</option>
+            <option value="January">January</option>
+            <option value="February">February</option>
+            <option value="March">March</option>
+            <option value="April">April</option>
+            <option value="May">May</option>
+            <option value="June">June</option>
+            <option value="July">July</option>
+            <option value="August">August</option>
+            <option value="September">September</option>
+            <option value="October">October</option>
+            <option value="November">November</option>
+            <option value="December">December</option>
+          </select></td>
+          <td class="static">Actual object</td>
+          <td><input type="number" name="startYearDuration" placeholder="Years"></td>
+        </tr>
+        <tr>
+          <td class="label">Completed</td>
+          <td><select name="completedYear" required>
+            <option value="">Year</option>
+            <option value="2026">2026</option>
+            <option value="2027">2027</option>
+            <option value="2028">2028</option>
+            <option value="2029">2029</option>
+            <option value="2030">2030</option>
+          </select></td>
+          <td><select name="completedMonth" required>
+            <option value="">Month</option>
+            <option value="January">January</option>
+            <option value="February">February</option>
+            <option value="March">March</option>
+            <option value="April">April</option>
+            <option value="May">May</option>
+            <option value="June">June</option>
+            <option value="July">July</option>
+            <option value="August">August</option>
+            <option value="September">September</option>
+            <option value="October">October</option>
+            <option value="November">November</option>
+            <option value="December">December</option>
+          </select></td>
+          <td class="static">Principal install., etc (remaining)</td>
+          <td><input type="number" name="completedYearDuration" placeholder="Years"></td>
+        </tr>
+      </table>
+
+      <table class="sheet-table budget-box">
+        <tr><td class="label" colspan="2">Request amount &nbsp;Rs.</td></tr>
+        <tr><td>Total budget amount</td><td><input type="number" step="0.01" name="totalBudgetAmount" required></td></tr>
+        <tr><td>Whereof approved</td><td><input type="number" step="0.01" name="whereofApproved" value="0" required></td></tr>
+        <tr><td>This request</td><td class="num auto" id="thisRequest">0.00</td></tr>
+        <tr><td>Balance Budget Amount</td><td class="num auto" id="balanceBudget">0.00</td></tr>
+      </table>
+    </div>
+
+    <div class="two-col">
+      <table class="sheet-table capex-box">
+        <tr><td class="label">CAPITAL EXPENDITURES</td><td class="label right">Amount&nbsp;Rs.</td></tr>
+        <tr><td><label><input type="checkbox" name="capexCategory" value="land"> Land</label></td><td class="num auto cat-amt" data-cat="land">–</td></tr>
+        <tr><td><label><input type="checkbox" name="capexCategory" value="landImprovement"> Land improvement</label></td><td class="num auto cat-amt" data-cat="landImprovement">–</td></tr>
+        <tr><td><label><input type="checkbox" name="capexCategory" value="buildings"> Buildings</label></td><td class="num auto cat-amt" data-cat="buildings">–</td></tr>
+        <tr><td><label><input type="checkbox" name="capexCategory" value="plantMachinery"> Plant/Machinery</label></td><td class="num auto cat-amt" data-cat="plantMachinery">–</td></tr>
+        <tr><td><label><input type="checkbox" name="capexCategory" value="operatingExpense"> Operating expense (cost)</label></td><td class="num auto cat-amt" data-cat="operatingExpense">–</td></tr>
+        <tr><td class="label">APPROPRIATION AMOUNT</td><td class="num auto total" id="appropriationAmount">0.00</td></tr>
+      </table>
+
+      <table class="sheet-table capreq-box">
+        <tr><td class="label">CAPITAL REQUIREMENT</td><td class="label right">Amount&nbsp;Rs</td></tr>
+        <tr><td>Appropriation</td><td class="num auto" id="appropriation">0.00</td></tr>
+        <tr><td>Disposal of existing asset</td><td><input type="number" step="0.01" name="disposalAmount" value="0"></td></tr>
+        <tr><td>Change in operating capital</td><td><input type="number" step="0.01" name="changeOpCapital" value="0"></td></tr>
+        <tr><td class="label">TOTAL CAP. REQUIREMENT</td><td class="num auto total" id="totalCapReq">0.00</td></tr>
+        <tr><td class="label">PAY BACK PERIOD</td><td>Year(s): <input type="number" step="0.1" name="paybackYears" class="inline-num"></td></tr>
+      </table>
+    </div>
+
+    <table class="sheet-table place-table">
+      <tr>
+        <td class="label" style="width:16%">Place and date:</td>
+        <td><input type="text" name="place" placeholder="e.g. Bokundara"></td>
+      </tr>
+    </table>
+
+    <table class="sheet-table signature-table">
+      <tr>
+        <td class="center">Application Approved</td>
+        <td class="center">Appropriation Granted</td>
+        <td class="center">Appropriation Granted</td>
+      </tr>
+      <tr class="sig-line"><td></td><td></td><td></td></tr>
+      <tr>
+        <td class="center small">General Manager - F&amp; A</td>
+        <td class="center small">Managing Director</td>
+        <td class="center small">Chairman of Board</td>
+      </tr>
+    </table>
+
+    <button type="submit" class="btn primary submit-btn">Generate application</button>
+    <p id="status" class="status"></p>
+  </form>
+
+  <div id="resultCard" class="result hidden">
+    <h2>Application generated</h2>
+    <p>Your Capex request has been filled into the official form.</p>
+    <a id="downloadLink" class="btn primary" href="#" download>Download Excel file</a>
+    <!-- <a href="requests.html" class="btn ghost">View all submitted requests</a> -->
+    <p class="hint">This link stays live — you (or anyone else on the team) can return and download it again later from the requests list.</p>
+  </div>
+
+  <div class="footer">&copy; 2026 Gislaved Gummi Lanka (Pvt) Ltd | Elastomeric Engineering Co Ltd &bull; All rights reserved.<br>Developed by IT Department.</div>
+</div>
+<div id="pwdModal" class="modal-overlay hidden">
+  <div class="modal-box">
+    <h2>Authentication Required</h2>
+    <p>Enter password to view submitted requests.</p>
+    <input type="password" id="pwdInput" placeholder="Password" autocomplete="off">
+    <div class="modal-actions">
+      <button class="btn ghost" onclick="closePwdModal()">Cancel</button>
+      <button class="btn primary" onclick="submitPwd()">Submit</button>
+    </div>
+    <p id="pwdError" class="pwd-error hidden">Incorrect password.</p>
+  </div>
+</div>
+<script>
+function viewRequests() {
+  document.getElementById('pwdError').classList.add('hidden');
+  document.getElementById('pwdInput').value = '';
+  document.getElementById('pwdModal').classList.remove('hidden');
+  document.getElementById('pwdInput').focus();
+  return false;
+}
+function closePwdModal() {
+  document.getElementById('pwdModal').classList.add('hidden');
+}
+function submitPwd() {
+  var pwd = document.getElementById('pwdInput').value;
+  if (pwd === 'stlk@2026') {
+    sessionStorage.setItem('requestsAccess', 'true');
+    location.href = 'requests.html';
+  } else {
+    document.getElementById('pwdError').classList.remove('hidden');
+    document.getElementById('pwdInput').focus();
+  }
+}
+document.getElementById('pwdInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') submitPwd();
+  if (e.key === 'Escape') closePwdModal();
+});
+</script>
+<script src="app.js?v2"></script>
+</body>
+</html>

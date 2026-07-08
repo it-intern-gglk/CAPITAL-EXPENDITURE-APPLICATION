@@ -1,0 +1,14 @@
+{
+  "name": "capex-form-system",
+  "version": "1.0.0",
+  "description": "Public web form that generates filled Capital Expenditure Application Excel files from the company's exact template.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "exceljs": "^4.4.0",
+    "uuid": "^9.0.1"
+  }
+}

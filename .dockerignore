@@ -1,0 +1,6 @@
+node_modules
+generated/*.xlsx
+generated/*.json
+.git
+.gitignore
+README.md
