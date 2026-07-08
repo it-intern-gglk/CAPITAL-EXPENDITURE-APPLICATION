@@ -16,7 +16,7 @@ const totalCapReqEl = document.getElementById('totalCapReq');
 const appropriationAmountEl = document.getElementById('appropriationAmount');
 const totalBudgetInput = document.querySelector('input[name="totalBudgetAmount"]');
 const whereofApprovedInput = document.querySelector('input[name="whereofApproved"]');
-const categoryCheckboxes = document.querySelectorAll('input[name="capexCategory"]');
+const categoryInputs = document.querySelectorAll('input[name="capexCategory"]');
 
 function addLineItem(description = '', amount = '') {
   const row = document.createElement('tr');
@@ -75,7 +75,7 @@ function recalc() {
 usdRateInput.addEventListener('input', recalc);
 totalBudgetInput.addEventListener('input', recalc);
 whereofApprovedInput.addEventListener('input', recalc);
-categoryCheckboxes.forEach((r) => r.addEventListener('change', recalc));
+categoryInputs.forEach((r) => r.addEventListener('change', recalc));
 addItemBtn.addEventListener('click', () => addLineItem());
 
 addLineItem();
@@ -96,12 +96,12 @@ form.addEventListener('submit', async (e) => {
     return;
   }
   if (!fd.get('reason')) {
-    statusEl.textContent = 'Select a reason.';
+    statusEl.textContent = 'Select at least one reason.';
     return;
   }
   const categories = Array.from(fd.getAll('capexCategory'));
   if (categories.length === 0) {
-    statusEl.textContent = 'Select at least one capital expenditure category.';
+    statusEl.textContent = 'Select a capital expenditure category.';
     return;
   }
 

@@ -86,19 +86,19 @@
       <p class="label">Reasons:</p>
       <table class="sheet-table reasons-table">
         <tr>
-          <td><label><input type="radio" name="reason" value="expansion" required> Expansion</label></td>
-          <td><label><input type="radio" name="reason" value="workingEnvironment"> Working environment</label></td>
+      <td><label><input type="checkbox" name="reason" value="expansion"> Expansion</label></td>
+      <td><label><input type="checkbox" name="reason" value="workingEnvironment"> Working environment</label></td>
         </tr>
         <tr>
-          <td><label><input type="radio" name="reason" value="environmentProtection"> Environment protection</label></td>
-          <td><label><input type="radio" name="reason" value="rationalization"> Rationalization</label></td>
+      <td><label><input type="checkbox" name="reason" value="environmentProtection"> Environment protection</label></td>
+      <td><label><input type="checkbox" name="reason" value="rationalization"> Rationalization</label></td>
         </tr>
         <tr>
-          <td><label><input type="radio" name="reason" value="replacement"> Replacement</label></td>
-          <td><label><input type="radio" name="reason" value="marketingPR"> Marketing/PR</label></td>
+      <td><label><input type="checkbox" name="reason" value="replacement"> Replacement</label></td>
+      <td><label><input type="checkbox" name="reason" value="marketingPR"> Marketing/PR</label></td>
         </tr>
       </table>
-      <label class="stacked">Description of proposal (goes on page 2 of the form)
+      <label class="stacked">Explain Reason
         <textarea name="reasonDescription" rows="3" placeholder="Explain the reason for this request in detail"></textarea>
       </label>
     </div>
@@ -177,11 +177,11 @@
     <div class="two-col">
       <table class="sheet-table capex-box">
         <tr><td class="label">CAPITAL EXPENDITURES</td><td class="label right">Amount&nbsp;Rs.</td></tr>
-        <tr><td><label><input type="checkbox" name="capexCategory" value="land"> Land</label></td><td class="num auto cat-amt" data-cat="land">–</td></tr>
-        <tr><td><label><input type="checkbox" name="capexCategory" value="landImprovement"> Land improvement</label></td><td class="num auto cat-amt" data-cat="landImprovement">–</td></tr>
-        <tr><td><label><input type="checkbox" name="capexCategory" value="buildings"> Buildings</label></td><td class="num auto cat-amt" data-cat="buildings">–</td></tr>
-        <tr><td><label><input type="checkbox" name="capexCategory" value="plantMachinery"> Plant/Machinery</label></td><td class="num auto cat-amt" data-cat="plantMachinery">–</td></tr>
-        <tr><td><label><input type="checkbox" name="capexCategory" value="operatingExpense"> Operating expense (cost)</label></td><td class="num auto cat-amt" data-cat="operatingExpense">–</td></tr>
+  <tr><td><label><input type="radio" name="capexCategory" value="land"> Land</label></td><td class="num auto cat-amt" data-cat="land">–</td></tr>
+  <tr><td><label><input type="radio" name="capexCategory" value="landImprovement"> Land improvement</label></td><td class="num auto cat-amt" data-cat="landImprovement">–</td></tr>
+  <tr><td><label><input type="radio" name="capexCategory" value="buildings"> Buildings</label></td><td class="num auto cat-amt" data-cat="buildings">–</td></tr>
+  <tr><td><label><input type="radio" name="capexCategory" value="plantMachinery"> Plant/Machinery</label></td><td class="num auto cat-amt" data-cat="plantMachinery">–</td></tr>
+  <tr><td><label><input type="radio" name="capexCategory" value="operatingExpense"> Operating expense (cost)</label></td><td class="num auto cat-amt" data-cat="operatingExpense">–</td></tr>
         <tr><td class="label">APPROPRIATION AMOUNT</td><td class="num auto total" id="appropriationAmount">0.00</td></tr>
       </table>
 
