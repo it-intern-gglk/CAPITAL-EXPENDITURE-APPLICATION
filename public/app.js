@@ -18,21 +18,43 @@ const totalBudgetInput = document.querySelector('input[name="totalBudgetAmount"]
 const whereofApprovedInput = document.querySelector('input[name="whereofApproved"]');
 const categoryInputs = document.querySelectorAll('input[name="capexCategory"]');
 
-function addLineItem(description = '', amount = '') {
+function addLineItem(description = '', usd = '', lkr = '') {
   const row = document.createElement('tr');
   row.className = 'line-item';
+  row.dataset.lastEdit = '';
   row.innerHTML = `
     <td><input type="text" class="item-desc" placeholder="" value="${description}" required></td>
-    <td><input type="number" step="0.01" class="item-amt" placeholder="0.00" value="${amount}" required></td>
-    <td class="num auto item-lkr">0.00</td>
+    <td><input type="number" step="0.01" class="item-usd" placeholder="0.00" value="${usd}"></td>
+    <td><input type="number" step="0.01" class="item-lkr" placeholder="0.00" value="${lkr}"></td>
     <td><button type="button" class="remove-item" title="Remove item">×</button></td>
   `;
+  row.querySelector('.item-usd').addEventListener('input', function () {
+    row.dataset.lastEdit = 'usd';
+    syncRow(row);
+  });
+  row.querySelector('.item-lkr').addEventListener('input', function () {
+    row.dataset.lastEdit = 'lkr';
+    syncRow(row);
+  });
   row.querySelector('.remove-item').addEventListener('click', () => {
     row.remove();
     recalc();
   });
-  row.querySelectorAll('input').forEach((el) => el.addEventListener('input', recalc));
   lineItemsEl.appendChild(row);
+  recalc();
+}
+
+function syncRow(row) {
+  const rate = parseFloat(usdRateInput.value) || 0;
+  const usdEl = row.querySelector('.item-usd');
+  const lkrEl = row.querySelector('.item-lkr');
+  if (row.dataset.lastEdit === 'usd' && rate > 0) {
+    const usd = parseFloat(usdEl.value) || 0;
+    lkrEl.value = usd ? (usd * rate).toFixed(2) : '';
+  } else if (row.dataset.lastEdit === 'lkr' && rate > 0) {
+    const lkr = parseFloat(lkrEl.value) || 0;
+    usdEl.value = lkr ? (lkr / rate).toFixed(2) : '';
+  }
   recalc();
 }
 
@@ -45,13 +67,12 @@ function recalc() {
   rateEcho.textContent = usdRateInput.value || '0';
 
   let usd = 0;
+  let lkr = 0;
   lineItemsEl.querySelectorAll('.line-item').forEach((row) => {
-    const amt = parseFloat(row.querySelector('.item-amt').value) || 0;
-    const lkr = amt * rate;
-    row.querySelector('.item-lkr').textContent = fmt(lkr);
-    usd += amt;
+    usd += parseFloat(row.querySelector('.item-usd').value) || 0;
+    lkr += parseFloat(row.querySelector('.item-lkr').value) || 0;
   });
-  const lkrTotal = usd * rate;
+  const lkrTotal = lkr;
 
   totalUsdEl.textContent = fmt(usd);
   totalLkrEl.textContent = fmt(lkrTotal);
@@ -72,7 +93,13 @@ function recalc() {
   });
 }
 
-usdRateInput.addEventListener('input', recalc);
+usdRateInput.addEventListener('input', function () {
+  document.querySelectorAll('.line-item').forEach((row) => {
+    const last = row.dataset.lastEdit;
+    if (last === 'usd' || last === 'lkr') syncRow(row);
+  });
+  recalc();
+});
 totalBudgetInput.addEventListener('input', recalc);
 whereofApprovedInput.addEventListener('input', recalc);
 categoryInputs.forEach((r) => r.addEventListener('change', recalc));
@@ -88,7 +115,8 @@ form.addEventListener('submit', async (e) => {
   const fd = new FormData(form);
   const lineItems = Array.from(lineItemsEl.querySelectorAll('.line-item')).map((row) => ({
     description: row.querySelector('.item-desc').value,
-    usdAmount: row.querySelector('.item-amt').value,
+    usdAmount: row.querySelector('.item-usd').value,
+    lkrAmount: row.querySelector('.item-lkr').value,
   })).filter((i) => i.description);
 
   if (lineItems.length === 0) {
