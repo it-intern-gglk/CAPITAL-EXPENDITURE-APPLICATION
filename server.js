@@ -34,6 +34,7 @@ app.post('/api/submit', async (req, res) => {
     await wb.xlsx.writeFile(filepath);
 
     const usdTotal = (data.lineItems || []).reduce((s, i) => s + (Number(i.usdAmount) || 0), 0);
+    const lkrTotal = (data.lineItems || []).reduce((s, i) => s + (Number(i.lkrAmount) || 0), 0);
     const usdRate = Number(data.usdRate) || 0;
 
     const meta = {
@@ -43,7 +44,7 @@ app.post('/api/submit', async (req, res) => {
       place: data.place || '',
       date: data.date || '',
       usdTotal,
-      lkrTotal: usdTotal * usdRate,
+      lkrTotal,
       createdAt: new Date().toISOString(),
     };
     // id.json lets /api/download/:id and /api/requests find the file later without a database
