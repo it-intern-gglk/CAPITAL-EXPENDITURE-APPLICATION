@@ -35,7 +35,25 @@
     <p id="pwdError" class="pwd-error hidden">Incorrect password.</p>
   </div>
 </div>
+
+<div id="deleteModal" class="modal-overlay hidden">
+  <div class="modal-box">
+    <h2>Delete Request</h2>
+    <p>Enter your name to confirm deletion of <strong id="deleteLabel"></strong>.</p>
+    <input type="text" id="deleteNameInput" placeholder="Your name" autocomplete="off">
+    <p id="deleteError" class="pwd-error hidden"></p>
+    <div class="modal-actions">
+      <button class="btn ghost" onclick="closeDeleteModal()">Cancel</button>
+      <button class="btn danger" onclick="confirmDelete()">Delete</button>
+    </div>
   </div>
+</div>
+  </div>
+
+  <details class="log-section" id="logSection">
+    <summary>Deletion Log</summary>
+    <div id="logList" class="log-list"><p class="hint">Loading…</p></div>
+  </details>
 
   <div class="footer">&copy; 2026 Gislaved Gummi Lanka (Pvt) Ltd | Elastomeric Engineering Co Ltd &bull; All rights reserved.<br>Developed by IT Department.</div>
 </div>
