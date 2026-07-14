@@ -1,0 +1,8 @@
+services:
+  capex:
+    build: .
+    ports:
+      - "3005:3005"
+    env_file: .env
+    volumes:
+      - ./generated:/app/generated
