@@ -51,9 +51,6 @@ function syncRow(row) {
   if (row.dataset.lastEdit === 'usd' && rate > 0) {
     const usd = parseFloat(usdEl.value) || 0;
     lkrEl.value = usd ? (usd * rate).toFixed(2) : '';
-  } else if (row.dataset.lastEdit === 'lkr' && rate > 0) {
-    const lkr = parseFloat(lkrEl.value) || 0;
-    usdEl.value = lkr ? (lkr / rate).toFixed(2) : '';
   }
   recalc();
 }

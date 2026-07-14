@@ -179,6 +179,8 @@ label.stacked textarea {
 .btn.primary:hover { background: #184a7c; }
 .btn.ghost { background: #fff; color: #1f5c99; border-color: #1f5c99; }
 .btn.ghost:hover { background: #f0f6fc; }
+.btn.danger { background: #b3261e; color: #fff; border-color: #b3261e; }
+.btn.danger:hover { background: #8f1d16; }
 .btn.small { padding: 5px 10px; font-size: 12px; }
 
 .submit-btn { margin-top: 18px; width: 100%; padding: 12px; font-size: 15px; }
@@ -227,6 +229,30 @@ label.stacked textarea {
 .modal-actions .btn { min-width: 80px; }
 .pwd-error { color: #b3261e; font-size: 13px; margin: 10px 0 0; }
 .pwd-error.hidden { display: none; }
+
+/* --- delete modal input --- */
+#deleteNameInput {
+  width: 100%; padding: 10px 12px; font-size: 15px;
+  border: 1px solid #999; border-radius: 4px; outline: none;
+  box-sizing: border-box;
+}
+#deleteNameInput:focus { border-color: #1f5c99; box-shadow: 0 0 0 2px rgba(31,92,153,0.2); }
+
+/* --- deletion log --- */
+.log-section {
+  margin-top: 18px; background: #fff; border: 1px solid #999;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.12); padding: 14px 20px;
+  cursor: pointer;
+}
+.log-section summary { font-weight: bold; font-size: 14px; cursor: pointer; }
+.log-list { margin-top: 10px; cursor: default; }
+.log-entry {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 6px 0; border-bottom: 1px solid #eee; gap: 12px; flex-wrap: wrap;
+}
+.log-entry:last-child { border-bottom: none; }
+.log-label { font-size: 13px; font-weight: 600; color: #333; }
+.log-meta { font-size: 12px; color: #888; white-space: nowrap; }
 
 /* --- footer --- */
 .footer {

@@ -1,8 +1,10 @@
+require('dotenv').config();
 const path = require('path');
 const fs = require('fs');
 const express = require('express');
 const { v4: uuidv4 } = require('uuid');
 const { fillCapexTemplate } = require('./lib/fillTemplate');
+const { notifyNewSubmission } = require('./lib/notify');
 
 const app = express();
 const PORT = process.env.PORT || 3005;
@@ -50,6 +52,8 @@ app.post('/api/submit', async (req, res) => {
     // id.json lets /api/download/:id and /api/requests find the file later without a database
     fs.writeFileSync(path.join(GENERATED_DIR, `${id}.json`), JSON.stringify(meta));
 
+    notifyNewSubmission(data).catch((err) => console.error('Email notification failed:', err));
+
     res.json({ id, downloadUrl: `/api/download/${id}` });
   } catch (err) {
     console.error(err);
@@ -59,13 +63,59 @@ app.post('/api/submit', async (req, res) => {
 
 // List every submitted request (for someone other than the filler to browse & download)
 app.get('/api/requests', (req, res) => {
-  const files = fs.readdirSync(GENERATED_DIR).filter((f) => f.endsWith('.json'));
+  const files = fs.readdirSync(GENERATED_DIR).filter((f) => f.endsWith('.json') && f !== 'deletion-log.json');
   const requests = files.map((f) => {
     const id = f.replace(/\.json$/, '');
     const meta = JSON.parse(fs.readFileSync(path.join(GENERATED_DIR, f), 'utf8'));
     return { id, ...meta };
   }).sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
   res.json(requests);
+});
+
+// Return the deletion log
+app.get('/api/deletion-log', (req, res) => {
+  const logPath = path.join(GENERATED_DIR, 'deletion-log.json');
+  if (!fs.existsSync(logPath)) return res.json([]);
+  res.json(JSON.parse(fs.readFileSync(logPath, 'utf8')));
+});
+
+// Delete a submitted request (removes both .json metadata and .xlsx file)
+app.delete('/api/requests/:id', (req, res) => {
+  const { id } = req.params;
+  const { deletedBy } = req.body;
+
+  if (!deletedBy || !deletedBy.trim()) {
+    return res.status(400).json({ error: 'Deleter name is required.' });
+  }
+
+  const metaPath = path.join(GENERATED_DIR, `${id}.json`);
+  if (!fs.existsSync(metaPath)) return res.status(404).json({ error: 'Request not found.' });
+
+  const meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
+  const xlsxPath = path.join(GENERATED_DIR, meta.filename);
+
+  // Remove files
+  fs.unlinkSync(metaPath);
+  if (fs.existsSync(xlsxPath)) fs.unlinkSync(xlsxPath);
+
+  // Append deletion log
+  const logEntry = {
+    id,
+    object: meta.object,
+    issuedBy: meta.issuedBy,
+    filename: meta.filename,
+    deletedBy: deletedBy.trim(),
+    deletedAt: new Date().toISOString(),
+  };
+  const logPath = path.join(GENERATED_DIR, 'deletion-log.json');
+  let log = [];
+  if (fs.existsSync(logPath)) {
+    log = JSON.parse(fs.readFileSync(logPath, 'utf8'));
+  }
+  log.push(logEntry);
+  fs.writeFileSync(logPath, JSON.stringify(log, null, 2));
+
+  res.json({ success: true });
 });
 
 // Download (works any time after submission, not just immediately)
