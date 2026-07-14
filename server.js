@@ -1,8 +1,10 @@
+require('dotenv').config();
 const path = require('path');
 const fs = require('fs');
 const express = require('express');
 const { v4: uuidv4 } = require('uuid');
 const { fillCapexTemplate } = require('./lib/fillTemplate');
+const { notifyNewSubmission } = require('./lib/notify');
 
 const app = express();
 const PORT = process.env.PORT || 3005;
@@ -49,6 +51,8 @@ app.post('/api/submit', async (req, res) => {
     };
     // id.json lets /api/download/:id and /api/requests find the file later without a database
     fs.writeFileSync(path.join(GENERATED_DIR, `${id}.json`), JSON.stringify(meta));
+
+    notifyNewSubmission(data).catch((err) => console.error('Email notification failed:', err));
 
     res.json({ id, downloadUrl: `/api/download/${id}` });
   } catch (err) {
